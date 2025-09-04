@@ -17,7 +17,7 @@ fi
 
 echo "==== Installing required packages ===="
 sudo yum install epel-release -y
-Sudo yum install git mariadb-server -y
+sudo yum install git mariadb-server -y
 
 
 echo "==== Starting and enabling MariaDB ===="
