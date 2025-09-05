@@ -69,4 +69,7 @@ sudo systemctl enable --now tomcat
 
 
 echo "=========== enable firewall ==============="
-sudo bash enable
+sudo bash /vagrant/en_firwall_tomcat.sh 
+
+
+echo "==== Provisioning tomcat DONE ✅😎👌 ===="
