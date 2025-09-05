@@ -1,7 +1,7 @@
 set -e 
 
 echo "=======updating system========"
-sudo ynm update -y
+sudo yum update -y
 
 echo "=========== install bash ==============="  
 if ! command -v bash &> /dev/null
