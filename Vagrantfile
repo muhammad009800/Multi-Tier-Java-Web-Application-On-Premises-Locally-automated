@@ -42,6 +42,7 @@ end
     mc01.vm.box_version = "9.0.43"
     mc01.vm.hostname = "mc01"
     mc01.vm.network "private_network", ip: "192.168.56.12"
+    mc01.vm.provision "shell", path: "mc01.sh"
     mc01.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
     end
