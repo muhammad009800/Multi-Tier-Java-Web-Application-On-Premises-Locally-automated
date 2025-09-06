@@ -22,10 +22,9 @@ if [ ! -f apache-tomcat-9.0.75.tar.gz ]; then
 	wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.tar.gz
 fi
 
-sudo mkdir -p /usr/local/tomcat
 
 if [ ! -d /usr/local/tomcat/bin ]; then
-    sudo tar xzvf /tmp/apache-tomcat-9.0.75.tar.gz -C /usr/local/tomcat --strip-components=1
+    sudo tar xzvf /tmp/apache-tomcat-9.0.75.tar.gz 
 else
     echo "Tomcat already extracted, skipping..."
 fi
