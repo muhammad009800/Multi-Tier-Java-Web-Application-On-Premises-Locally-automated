@@ -54,6 +54,7 @@ end
     rmq01.vm.box_version = "9.0.43"
     rmq01.vm.hostname = "rmq01"
     rmq01.vm.network "private_network", ip: "192.168.56.11"
+    rmq01.vm.provision "shell", path: "rmq01.sh"
     rmq01.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
     end
