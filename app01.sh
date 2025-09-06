@@ -15,15 +15,15 @@ fi
 
 echo "=========== install needed pkg for tomcat & install it ==============="
 sudo yum install -y epel-release
-sudo yum install -y java-11-openjdk java-11-openjdk-devel wget curl tar git firewalld -y
-sudo cd /tmp/
+sudo yum install java-11-openjdk java-11-openjdk-devel wget curl tar git firewalld -y
+cd /tmp/
 wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.tar.gz
 sudo tar xzvf apache-tomcat-9.0.75.tar.gz
 
 
 
 echo "=========== create user for tomcat & copy data to tomcat home ==============="
-sudo useradd --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
+sudo useradd --system --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
 sudo cp -r /tmp/apache-tomcat-9.0.75/* /usr/local/tomcat/
 sudo chown -R tomcat.tomcat /usr/local/tomcat
 
@@ -42,10 +42,12 @@ WorkingDirectory=/usr/local/tomcat
 Environment=JRE_HOME=/usr/lib/jvm/jre
 Environment=JAVA_HOME=/usr/lib/jvm/jre
 Environment=CATALINA_HOME=/usr/local/tomcat
-Environment=CATALINE_BASE=/usr/local/tomcat
+Environment=CATALINA_BASE=/usr/local/tomcat
 ExecStart=/usr/local/tomcat/bin/catalina.sh run
-ExecStop=/usr/local/tomcat/bin/shutdown.sh
+ExecStop=/usr/local/tomcat/bin/catalina.sh stop
 SyslogIdentifier=tomcat-%i
+Restart=on-failure
+
 
 [Install]
 WantedBy=multi-user.target
@@ -62,6 +64,8 @@ sudo systemctl daemon-reload
 
 
 echo "=========== enable and start  ==============="
+ss -tulnp | grep 8080
+
 
 sudo systemctl enable --now tomcat
 
