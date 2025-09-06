@@ -4,6 +4,23 @@ Vagrant.configure("2") do |config|
   config.hostmanager.manage_host = true
   config.vbguest.auto_update = false
 
+
+
+
+
+
+### build atrifact vm  ####
+  config.vm.define "mavin" do |mavin|
+    mavin.vm.box = "ubuntu/jammy64"
+    mavin.vm.hostname = "mavin"
+    mavin.vm.provision "shell", path: "maven.sh"
+    mavin.vm.network "private_network", ip: "192.168.56.13"
+    mavin.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+    end
+  end
+
+
 ### tomcat vm  ####
   config.vm.define "app01" do |app01|
     app01.vm.box = "eurolinux-vagrant/centos-stream-9"
@@ -26,16 +43,7 @@ config.vm.define "db01" do |db01|
     vb.memory = "2048"
   end
 end
-### build atrifact vm  ####
-  config.vm.define "mavin" do |mavin|
-    mavin.vm.box = "ubuntu/jammy64"
-    mavin.vm.hostname = "mavin"
-    mavin.vm.provision "shell", path: "maven.sh"
-    mavin.vm.network "private_network", ip: "192.168.56.13"
-    mavin.vm.provider "virtualbox" do |vb|
-      vb.memory = "1024"
-    end
-  end
+
 
 ### memcache  vm  ####
   config.vm.define "mc01" do |mc01|
