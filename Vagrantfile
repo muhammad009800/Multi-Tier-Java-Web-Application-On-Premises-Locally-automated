@@ -10,8 +10,7 @@ Vagrant.configure("2") do |config|
     app01.vm.box_version = "9.0.43"
     app01.vm.hostname = "app01"
     app01.vm.network "private_network", ip: "192.168.56.15"
-    #app01.vm.provision "shell", path: "app01.sh"
-    app01.vm.provision "shell", inline: "bash <(tail -n +40 /vagrant/app01.sh)"
+    app01.vm.provision "shell", path: "app01.sh"
     app01.vm.provider "virtualbox" do |vb|
       vb.memory = "6144"
    end
