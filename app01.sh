@@ -17,12 +17,23 @@ echo "=========== install needed pkg for tomcat & install it ==============="
 sudo yum install -y epel-release
 sudo yum install java-11-openjdk java-11-openjdk-devel wget curl tar git firewalld -y
 cd /tmp/
-wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.tar.gz
-sudo tar xzvf apache-tomcat-9.0.75.tar.gz
+
+if [ ! -f apache-tomcat-9.0.75.tar.gz ]; then
+	wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.75/bin/apache-tomcat-9.0.75.tar.gz
+fi
+
+sudo mkdir -p /usr/local/tomcat
+
+sudo tar xzvf /tmp/apache-tomcat-9.0.75.tar.gz -C /usr/local/tomcat --strip-components=1
+
 
 
 
 echo "=========== create user for tomcat & copy data to tomcat home ==============="
+if id tomcat &>/dev/null; then
+    sudo userdel -r tomcat
+fi
+sudo mkdir -p /usr/local/tomcat
 sudo useradd --system --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
 sudo cp -r /tmp/apache-tomcat-9.0.75/* /usr/local/tomcat/
 sudo chown -R tomcat.tomcat /usr/local/tomcat
@@ -64,16 +75,17 @@ sudo systemctl daemon-reload
 
 
 echo "=========== enable and start  ==============="
-ss -tulnp | grep 8080
 
 
 sudo systemctl enable --now tomcat
 
 
 
-
 echo "=========== enable firewall ==============="
-sudo bash /vagrant/en_firwall_tomcat.sh 
+sudo bash /vagrant/en_firwall_tomcat.sh
+echo "=========== check listening ==============="
+
+sudo ss -tulnp | grep 8080
 
 
 echo "==== Provisioning tomcat DONE ✅😎👌 ===="
