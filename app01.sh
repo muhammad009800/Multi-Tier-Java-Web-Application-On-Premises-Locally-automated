@@ -24,18 +24,24 @@ fi
 
 sudo mkdir -p /usr/local/tomcat
 
-sudo tar xzvf /tmp/apache-tomcat-9.0.75.tar.gz -C /usr/local/tomcat --strip-components=1
-
+if [ ! -d /usr/local/tomcat/bin ]; then
+    sudo tar xzvf /tmp/apache-tomcat-9.0.75.tar.gz -C /usr/local/tomcat --strip-components=1
+else
+    echo "Tomcat already extracted, skipping..."
+fi
 
 
 
 echo "=========== create user for tomcat & copy data to tomcat home ==============="
-if id tomcat &>/dev/null; then
-    sudo userdel -r tomcat
-fi
+
 sudo mkdir -p /usr/local/tomcat
-sudo useradd --system --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
-sudo cp -r /tmp/apache-tomcat-9.0.75/* /usr/local/tomcat/
+if ! id tomcat &>/dev/null; then
+    sudo useradd --system --home-dir /usr/local/tomcat --shell /sbin/nologin tomcat
+else
+    echo "User tomcat already exists"
+fi
+sudo rsync -a /tmp/apache-tomcat-9.0.75/ /usr/local/tomcat/
+
 sudo chown -R tomcat.tomcat /usr/local/tomcat
 
 
@@ -50,8 +56,8 @@ After=network.target
 [Service]
 User=tomcat
 WorkingDirectory=/usr/local/tomcat
-Environment=JRE_HOME=/usr/lib/jvm/jre
-Environment=JAVA_HOME=/usr/lib/jvm/jre
+Environment=JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+Environment=JRE_HOME=/usr/lib/jvm/java-11-openjdk
 Environment=CATALINA_HOME=/usr/local/tomcat
 Environment=CATALINA_BASE=/usr/local/tomcat
 ExecStart=/usr/local/tomcat/bin/catalina.sh run
