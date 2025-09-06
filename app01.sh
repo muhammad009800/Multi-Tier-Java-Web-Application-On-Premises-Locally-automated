@@ -90,10 +90,20 @@ echo "=========== enable firewall ==============="
 sudo bash /vagrant/en_firwall_tomcat.sh
 echo "=========== check listening ==============="
 
-sudo ss -tulnp | grep 8080
+if sudo ss -tulnp | grep -q 8080; then
+    echo "Tomcat is listening on port 8080 ✅"
+else
+    echo "WARNING: Tomcat is NOT listening on port 8080 ⚠️"
+fi
 
-
-echo "==== Provisioning tomcat DONE ✅😎👌 ===="
 
 sudo systemctl stop tomcat
 sudo rm -rf /usr/local/tomcat/webapps/ROOT*
+sudo cp -f /vagrant/myapp.war /usr/local/tomcat/webapps/ROOT.war
+
+
+sudo systemctl start tomcat
+sudo chown tomcat.tomcat /usr/local/tomcat/webapps -R
+sudo systemctl restart tomcat
+
+echo "==== Provisioning tomcat DONE ✅😎👌 ===="
