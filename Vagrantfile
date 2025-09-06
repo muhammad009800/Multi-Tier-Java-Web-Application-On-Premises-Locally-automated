@@ -30,6 +30,7 @@ end
   config.vm.define "mavin" do |mavin|
     mavin.vm.box = "ubuntu/jammy64"
     mavin.vm.hostname = "mavin"
+    mavin.vm.provision "shell", path: "maven.sh"
     mavin.vm.network "private_network", ip: "192.168.56.13"
     mavin.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
@@ -64,6 +65,7 @@ end
   config.vm.define "web01" do |web01|
     web01.vm.box = "ubuntu/jammy64"
     web01.vm.hostname = "web01"
+    web01.vm.provision "shell", path: "web01.sh"
     web01.vm.network "private_network", ip: "192.168.56.10"
     web01.vm.provider "virtualbox" do |vb|
       vb.memory = "1024"
