@@ -94,3 +94,6 @@ sudo ss -tulnp | grep 8080
 
 
 echo "==== Provisioning tomcat DONE ✅😎👌 ===="
+
+sudo systemctl stop tomcat
+sudo rm -rf /usr/local/tomcat/webapps/ROOT*
